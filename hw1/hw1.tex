@@ -1,0 +1,123 @@
+\documentclass{article}
+
+\usepackage{listings}
+\usepackage{graphicx,tikz}
+%\usepackage{pgfplots}
+%\usepgfplotslibrary{polar}
+%\usepgflibrary{shapes.geometric}
+%\usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage[letterpaper, portrait, margin=1in]{geometry}
+\usepackage{diagbox}
+\usepackage{slashbox}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{dsfont}
+\usepackage[scr=boondoxo,scrscaled=1.05]{mathalfa}
+\newcommand{\Gal}{{\textrm{Gal}}}
+\newcommand{\diam}{{\textrm{diam}}}
+\newcommand{\cc}{{\mathbb C}}
+\newcommand{\ee}{{\mathbb E}}
+\newcommand{\id}{{\mathds{1}}}
+\newcommand{\pp}{{\mathbb P}}
+\newcommand{\rr}{{\mathbb R}}
+\newcommand{\qq}{{\mathbb Q}}
+\newcommand{\nn}{\mathbb N}
+\newcommand{\zz}{\mathbb Z}
+\newcommand{\aaa}{{\mathcal A}}
+\newcommand{\bbb}{{\mathcal B}}
+\newcommand{\rrr}{{\mathcal R}}
+\newcommand{\fff}{{\mathcal F}}
+\newcommand{\ppp}{{\mathcal P}}
+\newcommand{\llll}{{\mathcal L}}
+\newcommand{\ttt}{{\mathcal T}}
+\newcommand{\jjj}{{\mathcal J}}
+\newcommand{\sss}{{\mathcal S}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\vv}{{\mathbf v}}
+\newcommand{\ww}{{\mathbf w}}
+\newcommand{\xx}{{\mathbf x}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\Om}{\Omega}
+\newcommand{\e}{e^{\frac{2\pi i}{3}}}
+\newcommand{\eF}{e^{\frac{4\pi i}{3}}}
+\newcommand{\CT}{\sqrt[3]{2}}
+\newcommand{\inter}{\textrm{int}}
+\newcommand{\R}{\textrm{Re }}
+\newcommand{\I}{\textrm{Im }}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdm}[3]{\frac{\partial^{#3}#1}{\partial #2^{#3}}}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\Log}{\text{Log }}
+\newcommand{\Res}[2]{\text{Res }\left[ #1 , #2 \right]}
+\newcommand{\fcint}{\int_{-\pi}^\pi}
+\newcommand{\vs}{\vspace{0.3cm}}
+\newcommand{\vsf}{\vspace{0.4cm}}
+
+\title{FINM 32000: Homework 1}
+\author{Philip Lee (UCID \#12129240)}
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PROBLEM 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item
+
+\begin{enumerate}
+	\item How should the integer j be chosen?
+	
+	Using $N=5\mathrm{e}+4$, $\Delta t =\frac{T}{N}= 5\mathrm{e}-6$. \\
+	$\Delta x = \sigma \sqrt{3 \Delta t} = 1.549\mathrm{e}-3$.\\
+	Therefore, $j \approx \log(\frac{114}{100}) \Delta x -0.5=84.078 \implies 84$ \\
+	\\
+	Using barrier\_trinom\_pricer, the barrier put price is $\$5.30$.
+	
+	\item $(K-S_T)^+ = (K-S_T)^+ \mathbbm{1}_{S_t<H} + (K-S_T)^+ \mathbbm{1}_{S_t \geq H}$ \\
+	Therefore, we can price the up-and-in put using the up-and-out put and a vanilla European put. \\
+	$P-P_{\mathbbm{1}_{S_t<H}} = P_{\mathbbm{1}_{S_t \geq H}}=\$0.22$
+	
+	\item
+	\begin{enumerate}
+	\item The continuously-monitored barrier option will be priced lower than or equal to the discretely-monitored. This is because the discrete monitoring has a chance of missing a crossing of the H threshold and not triggering the barrier whereas the cross will trigger for the continuously monitored.
+	\item 
+	$$\begin{aligned}
+	S_t &= 114 \\
+	\alpha &= \frac{C_t^{BS}(S_t,K=136.8)}{P_t^{BS}(S_t,K=95)} = \frac{5}{6} \\
+	S_0 &= 100 \\
+	P_0^{\text{cont}} &= P_0^{BS}(S_0,K=95) - \alpha C_0^{BS}(S_0,K=136.8) \\
+		&= 5.03
+	\end{aligned}$$
+	\end{enumerate}
+	
+\end{enumerate}
+\item 
+
+\begin{enumerate}
+	\item
+	$$\begin{aligned}
+	S=100, rGrow=r=0, K&=100 \\
+	IV(C^{BS}=11.25, T=0.5)&=0.4001 \\
+	IV(C^{BS}=12.00, T=1.0)&=0.3019
+	\end{aligned}$$
+	
+	\item
+	$$\begin{aligned}
+	IV_{T=0.75} &= \frac{IV_{T=0.50}+IV_{T=1.00}}{2} \\
+	&= 0.3510 \\
+	sigma&=0.3510, S=100, \\
+	r_{grow}&=0, r=0, K=100, T=0.75 \\
+	C^{BS}&=12.08
+	\end{aligned}$$
+	
+	\item $V = -C(T=0.75)+C(T=1.00) = -12.08 + 12.00 = 0.08$. Get Paid \$0.08 initially, non-negative payoff in the future: Type II arb. At $t=0.75$, if the options are ITM, exercise $C(T=1.00)=S_0.75-K$ to pay off $-C(T=0.75)=K-S_0.75$, whereas if the options are OTM, either sell $C(T=1.00)$ or hold it for longer to speculate. If cash settled, exercise for money to balance the account, if physically settled, exercise for shares to transfer to the buyer of $C(T=0.75)$. 
+
+\end{enumerate}
+\end{enumerate}
+
+\end{document}
